@@ -1,8 +1,5 @@
 FROM ubuntu:18.04
 
-WORKDIR /app
-COPY . .
-
 # setup nginx + passenger + node lts + npm
 RUN apt-get update \
   && apt-get install -y nginx nodejs npm curl \
@@ -13,6 +10,9 @@ RUN apt-get update \
   && sh -c 'echo deb https://oss-binaries.phusionpassenger.com/apt/passenger bionic main > /etc/apt/sources.list.d/passenger.list' \
   && apt-get update \
   && apt-get install -y libnginx-mod-http-passenger
+
+WORKDIR /app
+COPY . .
 
 # setup nginx conf
 RUN cat /app/default.conf > /etc/nginx/sites-available/default
